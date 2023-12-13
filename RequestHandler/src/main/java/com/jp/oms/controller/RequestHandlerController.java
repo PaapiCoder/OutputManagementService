@@ -1,6 +1,8 @@
 package com.jp.oms.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jp.oms.dtos.OnlineRequestDto;
+import com.jp.oms.exceptions.UnsupportedFileTypeException;
 import com.jp.oms.services.RequestHandlerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,12 @@ public class RequestHandlerController {
 
 
 	@PostMapping("/onlineRequest")
-	public ResponseEntity<?> onlineRequest(@Valid @RequestBody OnlineRequestDto onlineRequest) {
+	public ResponseEntity<?> onlineRequest(@Valid @RequestBody OnlineRequestDto onlineRequest) throws JsonProcessingException {
 		return new ResponseEntity<>((requestHandlerService.handleOnlineRequest(onlineRequest)), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/bulkRequest")
-	public ResponseEntity<?> bulkRequest(@RequestBody MultipartFile bulkRequestFile) throws IOException {
+	public ResponseEntity<?> bulkRequest(@RequestBody MultipartFile bulkRequestFile) throws IOException, UnsupportedFileTypeException {
 		return new ResponseEntity<>((requestHandlerService.handleBulkRequest(bulkRequestFile)), HttpStatus.CREATED);
 	}
 }

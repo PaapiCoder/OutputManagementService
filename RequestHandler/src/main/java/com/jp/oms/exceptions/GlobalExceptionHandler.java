@@ -33,15 +33,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Map<String, List<String>>> constraintViolationException(ConstraintViolationException ex, WebRequest request) {
-    List<String> errors = new ArrayList<>();
-
-    ex.getConstraintViolations().forEach(cv -> errors.add(cv.getMessage()));
-
-    Map<String, List<String>> result = new HashMap<>();
-    result.put("errors", errors);
-
-    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(UnsupportedFileTypeException.class)
+    public ResponseEntity<Map<String,String>> resourceNotFoundException(UnsupportedFileTypeException ex, WebRequest request) {
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }
